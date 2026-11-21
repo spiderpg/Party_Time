@@ -289,7 +289,7 @@
 
         <!-- Mensaje de Bienvenida -->
         <section class="section intro-section">
-            <p>¡Ven a celebrar un año más lleno de alegría, juegos y pastel! Tu presencia hará este día súper especial.</p>
+            <p>¡Ven a celebrar un año más lleno de alegría, plática y pastel! Tu presencia hará este día súper especial.</p>
         </section>
 
         <!-- Cuenta Regresiva -->
@@ -321,16 +321,16 @@
             
             <div class="card">
                 <i class="fas fa-calendar-alt"></i>
-                <h3>Sábado 12 de Diciembre</h3>
-                <p>A partir de las 4:00 PM</p>
+                <h3>Domingo 29 de noviembre</h3>
+                <p>A partir de las 12:00 PM</p>
             </div>
 
             <div class="card">
                 <i class="fas fa-map-marker-alt"></i>
-                <h3>Salón de Eventos "La Fiesta"</h3>
-                <p>Av. Principal #123, Col. Centro, Guadalajara, Jal.</p>
+                <h3>"Estacionamiento"</h3>
+                <p>Pino Suarez #403, Col. Barrio de Santa Clara</p>
                 <!-- AQUÍ VA EL ENLACE DE GOOGLE MAPS -->
-                <a href="https://google.com" target="_blank" class="btn btn-map">
+                <a href="https://maps.app.goo.gl/Dt7KuywopWxxwEJr5" target="_blank" class="btn btn-map">
                     <i class="fas fa-directions"></i> Ver ubicación en Mapa
                 </a>
             </div>
@@ -339,11 +339,13 @@
         <!-- Confirmación por WhatsApp -->
         <section class="section">
             <h2 class="section-title">Confirma tu asistencia</h2>
-            <p>Por favor confírmanos antes del 5 de Diciembre para tener listo tu lugar.</p>
+            <p>Por favor si aún no lo has hecho, confírmanos antes del 23 de noviembre para tener listo tu lugar.</p>
             
-            <div class="rsvp-form">
+             <div class="rsvp-form">
                 <div class="form-group">
                     <label for="guestName">Tu nombre o familia:</label>
+                    <input type="text" id="guestName" placeholder="Ej. Familia Pérez" required>
+                </div>
                 <div class="form-group">
                     <label for="guestCount">Número de asistentes:</label>
                     <select id="guestCount">
@@ -416,7 +418,7 @@
         function sendWhatsApp() {
             // AQUÍ VA TU NÚMERO DE WHATSAPP (Con código de país, sin el símbolo +)
             // Ejemplo México: 52 + 10 dígitos -> 523312345678
-            const phoneNumber = "523312345678"; 
+            const phoneNumber = "527221185744"; 
             
             const name = document.getElementById("guestName").value.trim();
             const count = document.getElementById("guestCount").value;
