@@ -32,8 +32,95 @@
             overflow-x: hidden;
         }
 
+        /* Pantalla inicial difuminada */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .welcome-overlay p {
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .enter-btn {
+            background: var(--primary);
+            color: white;
+            border: 3px solid white;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5);
+            animation: pulse 1.5s infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Botón chico arriba a la derecha (Stop / Play) */
+        .music-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: rgba(44, 62, 80, 0.85);
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Oculto hasta quitar la pantalla difuminada */
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn.visible {
+            display: inline-flex;
+        }
+
+        .music-btn.playing {
+            background: var(--primary);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
         .container {
-            max-width: 480px; /* Tamaño ideal para móvil en escritorio */
+            max-width: 480px;
             margin: 0 auto;
             background: #ffffff;
             min-height: 100vh;
@@ -42,44 +129,12 @@
             padding-bottom: 40px;
         }
 
-        /* Botón flotante de música */
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
-
-        .music-btn.playing {
-            animation: pulse 1.5s infinite;
-            background: var(--secondary);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
         /* Portada / Hero */
         .hero {
             background: linear-gradient(135deg, var(--primary), #FF8E53);
             color: white;
             text-align: center;
-            padding: 50px 20px 70px;
+            padding: 55px 20px 70px;
             border-bottom-left-radius: 40px;
             border-bottom-right-radius: 40px;
             position: relative;
@@ -265,15 +320,22 @@
 </head>
 <body>
 
-    <!-- Reproductor de Audio (Oculto) -->
+    <!-- Pantalla inicial difuminada -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <p>Tienes una invitación especial</p>
+        <button class="enter-btn" id="enterBtn">
+            <i class="fas fa-envelope-open-text"></i> Dar clic
+        </button>
+    </div>
+
+    <!-- Reproductor de Audio -->
     <audio id="bgMusic" loop>
-        <!-- AQUÍ VA EL NOMBRE DE TU ARCHIVO DE MÚSICA -->
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón flotante para activar/pausar música -->
-    <button class="music-btn" id="musicToggle" title="Música">
-        <i class="fas fa-play" id="musicIcon"></i>
+    <!-- Botón chico arriba a la derecha -->
+    <button class="music-btn" id="musicToggle" title="Controlar música">
+        <i class="fas fa-stop" id="musicIcon"></i> <span id="musicText">Stop</span>
     </button>
 
     <div class="container">
@@ -282,14 +344,13 @@
             <h2>¡Estás invitado al cumple de</h2>
             <h1>Velín!</h1>
             <div class="photo-frame">
-                <!-- AQUÍ VA EL NOMBRE DE TU FOTO -->
                 <img src="velin.jpg" alt="Foto de Velín">
             </div>
         </header>
 
         <!-- Mensaje de Bienvenida -->
         <section class="section intro-section">
-            <p>¡Ven a celebrar un año más lleno de alegría, plática y pastel! Tu presencia hará este día súper especial.</p>
+            <p>¡Ven a celebrar un año más lleno de alegría, juegos y pastel! Tu presencia hará este día súper especial.</p>
         </section>
 
         <!-- Cuenta Regresiva -->
@@ -315,33 +376,30 @@
             </div>
         </section>
 
-        <!-- Fecha, Hora y Lugar -->
         <section class="section">
             <h2 class="section-title">¿Cuándo y Dónde?</h2>
             
             <div class="card">
                 <i class="fas fa-calendar-alt"></i>
-                <h3>Domingo 29 de noviembre</h3>
+                <h3>Domingo 29 de Noviembre</h3>
                 <p>A partir de las 12:00 PM</p>
             </div>
 
             <div class="card">
                 <i class="fas fa-map-marker-alt"></i>
-                <h3>"Estacionamiento"</h3>
-                <p>Pino Suarez #403, Col. Barrio de Santa Clara</p>
-                <!-- AQUÍ VA EL ENLACE DE GOOGLE MAPS -->
+                <h3>Estacionamiento</h3>
+                <p>Pino Suárez #403 Barrio de Santa Clara</p>
                 <a href="https://maps.app.goo.gl/Dt7KuywopWxxwEJr5" target="_blank" class="btn btn-map">
                     <i class="fas fa-directions"></i> Ver ubicación en Mapa
                 </a>
             </div>
         </section>
 
-        <!-- Confirmación por WhatsApp -->
         <section class="section">
             <h2 class="section-title">Confirma tu asistencia</h2>
-            <p>Por favor si aún no lo has hecho, confírmanos antes del 23 de noviembre para tener listo tu lugar.</p>
+            <p>Por favor confírmanos antes del 23 de Noviembre para tener listo tu lugar.</p>
             
-             <div class="rsvp-form">
+            <div class="rsvp-form">
                 <div class="form-group">
                     <label for="guestName">Tu nombre o familia:</label>
                     <input type="text" id="guestName" placeholder="Ej. Familia Pérez" required>
@@ -368,9 +426,7 @@
     </div>
 
     <script>
-        // 1. CONFIGURACIÓN DE LA FECHA DEL EVENTO (Año, Mes-1, Día, Hora, Minuto)
-        // Nota: En JavaScript los meses van de 0 (Enero) a 11 (Diciembre). Ejemplo: Diciembre es 11.
-        const eventDate = new Date(2026, 11, 12, 16, 0, 0).getTime();
+        const eventDate = new Date(2026, 10, 29, 16, 0, 0).getTime();
 
         const countdown = setInterval(() => {
             const now = new Date().getTime();
@@ -393,33 +449,48 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // 2. CONTROL DE MÚSICA
+        const welcomeOverlay = document.getElementById("welcomeOverlay");
+        const enterBtn = document.getElementById("enterBtn");
         const musicBtn = document.getElementById("musicToggle");
         const musicIcon = document.getElementById("musicIcon");
+        const musicText = document.getElementById("musicText");
         const bgMusic = document.getElementById("bgMusic");
         let isPlaying = false;
+
+        enterBtn.addEventListener("click", () => {
+            welcomeOverlay.classList.add("hidden");
+            musicBtn.classList.add("visible", "playing");
+            
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicIcon.className = "fas fa-stop";
+                musicText.innerText = "Stop";
+            }).catch(() => {
+                isPlaying = false;
+                musicBtn.classList.remove("playing");
+                musicIcon.className = "fas fa-play";
+                musicText.innerText = "Play";
+            });
+        });
 
         musicBtn.addEventListener("click", () => {
             if (isPlaying) {
                 bgMusic.pause();
-                musicIcon.classList.remove("fa-pause");
-                musicIcon.classList.add("fa-play");
+                bgMusic.currentTime = 0;
+                musicIcon.className = "fas fa-play";
+                musicText.innerText = "Play";
                 musicBtn.classList.remove("playing");
             } else {
                 bgMusic.play();
-                musicIcon.classList.remove("fa-play");
-                musicIcon.classList.add("fa-pause");
+                musicIcon.className = "fas fa-stop";
+                musicText.innerText = "Stop";
                 musicBtn.classList.add("playing");
             }
             isPlaying = !isPlaying;
         });
 
-        // 3. CONFIRMACIÓN POR WHATSAPP
         function sendWhatsApp() {
-            // AQUÍ VA TU NÚMERO DE WHATSAPP (Con código de país, sin el símbolo +)
-            // Ejemplo México: 52 + 10 dígitos -> 523312345678
-            const phoneNumber = "527221185744"; 
-            
+            const phoneNumber = "523312345678";
             const name = document.getElementById("guestName").value.trim();
             const count = document.getElementById("guestCount").value;
 
@@ -429,11 +500,10 @@
             }
 
             const message = `¡Hola! Confirmo nuestra asistencia al cumpleaños de Velín 🎉.%0A*Nombre:* ${name}%0A*Asistentes:* ${count}`;
-            const whatsappURL = `https://wa.me{phoneNumber}?text=${message}`;
+            const whatsappURL = `https://wa.me/+527221185744?text=${message}`;
             
             window.open(whatsappURL, "_blank");
         }
     </script>
 </body>
 </html>
-
